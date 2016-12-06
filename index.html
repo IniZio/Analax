@@ -1,6 +1,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+    <link rel="stylesheet" type="text/css" href="Toolbar.css">
   </head>
   <body>
     <form class="form-horizontal">
@@ -28,18 +29,53 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </div>
       </div>
-      <button id="removeFrame">remove Frames</button>
     </form>
+    <button id="removeFrame">Remove Frames</button>
+    <button id="addToolbar">Add Toolbar</button>
+
     <script
   src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script>
-       $('input,button').click(function() {
-         if (!$(this).parent().hasClass('analax-frame'))
-          $(this).wrap('<div class="analax-frame" style="border:1px red solid; padding: 5px"></div>');
-       })
-      $('#removeFrame').click(function() {
-        $(".analax-frame").contents().unwrap();
+      $('#addToolbar').click(function() {
+        // prevent default click actions
+        $('*').unbind("click");
+        $('*').click(function(e) { e.preventDefault(); return false;  })
+
+        // add selection frame on click input elementa
+        $('input,button').click(function() {
+           if (!$(this).parent().hasClass('analax-frame'))
+            $(this).wrap('<div class="analax-frame" style="border:1px red solid; padding: 5px"></div>');
+         })
+        $('#removeFrame').click(function() {
+          $(".analax-frame").contents().unwrap();
+          return false
+        })
+
+        // $.get("Toolbar.html", function(data) {
+        //   $(data).prependTo($("body").children());
+        // })
+        $(`
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header ">
+      <a class="navbar-brand collapse navbar-collapse" href="#">Analax</a>
+    </div>
+    
+    <div class="collapse navbar-collapse">
+         <div class="btn btn-sm navbar-btn glyphicon glyphicon-folder-open"></div>
+         <div class="btn btn-sm navbar-btn glyphicon glyphicon-refresh"></div>
+         
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+        `).prependTo($("body").children().first());
       })
     </script>
   </body>
