@@ -1,24 +1,21 @@
 <template>
-<div class="v-popover-wrap" :style="{left: x + 'px', top: y + 'px', visibility: show ? 'visible' : 'hidden'}">
-  <div class="v-popover-box">
-    <div class="v-popover-title">{{title}}</div>
-    <div class="v-popover-content">{{content}}</div>
-    <div :class="['v-popover-arrow', placement == 'top' ? 'v-popover-arrow-top' : 'v-popover-arrow-bottom']" :style="{left: arrowLeft + 'px'}"></div>
-  </div>
+<div class="actionBox from-below" :class="{'is-active': show}">{{title}}
+<div class="uk-form-row">
+  <label class="uk-form-label" for="form-gender">Gender</label>
+  <select>
+      <option>Male</option>
+      <option>Female</option>
+  </select>
+</div>
 </div>
 </template>
 <script>
   export default {
     props: {
-      title: {
-        default: 'title'
-      },
-      content: {
-        default: 'content'
-      },
-      placement: {
-        default: 'top'
-      }
+      title: { default: 'title' },
+      content: { default: 'content' },
+      placement: { default: 'top' },
+      show: { default: false }
     },
     data () {
       return {
