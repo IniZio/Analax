@@ -1,0 +1,12 @@
+@import "~uikit/scss/uikit-mixins.scss";
+
+@import "./styles/variables";
+
+@import "~uikit/scss/uikit-variables.scss";
+@import "~uikit/../themes/almost-flat-scss/uikit.scss";
+@import "~uikit/scss/uikit.scss";
+@import "~uikit/scss/components/autocomplete.scss";
+
+[v-cloak] {
+  display: none;
+}
