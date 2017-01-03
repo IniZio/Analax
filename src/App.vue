@@ -11,10 +11,6 @@
     mapGetters
   } from 'vuex'
 
-  // import Toolbar from './components/Toolbar'
-  // import Selectionframe from './components/Selectionframe'
-  // import Actionbox from './components/Actionbox'
-
   export default {
     name: 'app',
     components: {
@@ -23,24 +19,27 @@
     },
     data () {
       return {
+        events: []
         // editorReady: false,
         // frames: []
       }
     },
     methods: {
-      ...mapActions(['setEditorMode'])
+      ...mapActions(['toggleEditorMode'])
     },
     computed: {
       ...mapGetters(['getEditorMode'])
     },
     mounted () {
-      this.setEditorMode(true)
+      this.toggleEditorMode(true)
     },
     watch: {
-      'getEditorMode': function (mode) {
+      'getEditorMode': function (mode, oldmode) {
         if (mode) {
+          if (!oldmode) this.events = $('*').data('events')
           // prevent default click actions
           // TODO save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
+          $('*').removeAttr('click')
           $('*').unbind('click')
           $('*').not('[id^="alx"]').not('[class^="alx"]')
             .click(function (e) {
@@ -53,8 +52,8 @@
           var Child = Vue.extend(require('./components/Selectionframe'))
 
           // TODO a better way to avoid elements of live editor itself?
-          $('input,button').not('[id^="alx"]').not('[class^="alx"]')
-            .mouseover(function () {
+          $('input,button,select').not('[id^="alx"]').not('[class^="alx"]')
+            .bind('mouseover', function () {
               if (!$(this).parent().hasClass('alx-frame')) {
                 $(this).wrap(alxFrame)
                 var orig = $(this)[0]

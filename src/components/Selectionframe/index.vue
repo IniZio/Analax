@@ -1,6 +1,7 @@
 <template>
-<div id="alx-selectionFrame" class="Selectionframe" :class="{'is-selected': isSelected}" @click="toggleSelection(true)" v-html="element.outerHTML">
-<Actionbox :title="popTitle" :content="popContent" :placement="popPlacement" />
+<div id="alx-selectionFrame" class="Selectionframe" :class="{'is-selected': isSelected}" @click="toggleSelection(true)">
+<div v-html="element.outerHTML"></div>
+<Actionbox :title="popTitle" :content="popContent" :placement="popPlacement" :show="isSelected" />
 </div>
 </template>
 <script>
@@ -18,7 +19,6 @@
     },
     methods: {
       toggleSelection (state) {
-        console.log('hi')
         if (state !== null) this.isSelected = state
         else this.isSelected = !this.isSelected
       }
