@@ -1,6 +1,8 @@
 <template>
   <div id="alx-app" v-cloak>
     <Toolbar v-if="getEditorMode" />
+    <!-- <iframe id="iframe" height="500" width="100%"></iframe> -->
+    <div id="iframe"></div>
   </div>
 </template>
 <script>
@@ -19,7 +21,8 @@
     },
     data () {
       return {
-        events: []
+        events: [],
+        urlQueries: {}
         // editorReady: false,
         // frames: []
       }
@@ -28,10 +31,35 @@
       ...mapActions(['toggleEditorMode'])
     },
     computed: {
-      ...mapGetters(['getEditorMode'])
+      ...mapGetters(['getEditorMode']),
+      searchParam: () => window.location.search.substr(1).split('&')
     },
     mounted () {
       this.toggleEditorMode(true)
+
+      this.searchParam.forEach(function (item) { this.urlQueries[item.split('=')[0]] = item.split('=')[1] }.bind(this))
+
+      var url = this.urlQueries.target
+
+      if (url) {
+        $.ajaxSetup({
+          scriptCharset: 'utf-8', // or "ISO-8859-1"
+          contentType: 'application/json; charset=utf-8'
+        })
+        $.getJSON('https://originwhatever.herokuapp.com/get?url=' + encodeURIComponent(url) + '&callback=?', function (data) {
+          // Using div
+          var html = '' + data.contents
+          html = html.replace(new RegExp('(href|src)="/', 'g'), '$1="' + url + '/')
+          $('#iframe').html(html)
+
+          // // Using iframe
+          // var d = $('#iframe')[0].contentWindow.document // contentWindow works in IE7 and FF
+          // d.open(); d.close() // must open and close document object to start using it!
+
+          // // now start doing normal jQuery:
+          // $('body', d).append(data.contents)
+        })
+      }
     },
     watch: {
       'getEditorMode': function (mode, oldmode) {
@@ -75,6 +103,14 @@
         } else {
           // TODO should undo all actions of when mode is true, now just refresh
         }
+      },
+      'searchParam': function (newParam, oldParam) {
+        newParam.forEach(function (item) { this.urlQueries[item.split('=')[0]] = item.split('=')[1] }.bind(this))
+      },
+      'urlQueries': function (newQueries) {
+        $('#iframe').load(newQueries.target, {
+          'Access-Control-Allow-Origin': '*'
+        })
       }
     },
     store

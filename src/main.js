@@ -4,7 +4,7 @@ import Vue from 'vue'
 import 'uikit/js/uikit.min.js'
 import App from './App'
 
-$(`<div id="app"></div>`).prependTo($('body').first())
+// $(`<div id="app"></div>`).prependTo($('body').first())
 
 /* eslint-disable no-new */
 new Vue({
