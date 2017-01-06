@@ -1,0 +1,2 @@
+webpackJsonp([2,0],[function(e,n,t){"use strict";function l(e){return e&&e.__esModule?e:{default:e}}var o=t(1),p=l(o),u=p.default.extend({name:"app",template:"\n    <h1>Hello i am popup</h1>\n  ",mounted:function(){console.log("Hello!!!")}});new p.default({el:"#app",template:"<App/>",render:function(e){return e(u)}})}]);
+//# sourceMappingURL=popup.js.map
