@@ -16,8 +16,7 @@ export default {
     this.mode = true
   },
   components: {
-    Toolbar: require('./components/Toolbar'),
-    ActionPopup: require('./components/ActionPopup')
+    Toolbar: require('./components/Toolbar')
   },
   watch: {
     'mode': function (mode, oldmode) {
