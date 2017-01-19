@@ -14,3 +14,6 @@ npm run dev
 # build for production with minification
 npm run build
 ```
+
+## NOTES
+- Make pageview trackers detect if url have user-specific parts e.g. /profile/someone

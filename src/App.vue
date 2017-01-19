@@ -6,62 +6,89 @@
 
 <script>
 import Vue from 'vue'
+import { setEditorMode } from './vuex/action'
+import { getEditorMode } from './vuex/getter'
+
 export default {
   data () {
     return {
-      mode: false
+      frames: []
     }
   },
   created () {
-    this.mode = true
+    this.setEditorMode(true)
   },
   components: {
     Toolbar: require('./components/Toolbar')
   },
+  events: {
+    'pause-editor': function () {
+      this.exitMode()
+    }
+  },
+  methods: {
+    exitMode () {
+      // Destroy selection frames and frames array
+      for (let f of this.frames) { f.$destroy() }
+      this.frames = []
+
+      this.setEditorMode(false)
+    }
+  },
+  vuex: {
+    actions: {
+      setEditorMode
+    },
+    getters: {
+      getEditorMode
+    }
+  },
   watch: {
-    'mode': function (mode, oldmode) {
+    'getEditorMode': function (mode, oldmode) {
+      const toBeTracked = 'input,button,select'
+
       if (mode) {
-          if (!oldmode) this.events = $('*').data('events')
-          // prevent default click actions
           // TODO save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
-          $('*').removeAttr('click')
-          $('*').unbind('click')
-          $('*').not('[id^="alx"]').not('[class^="alx"]')
-            .click(function (e) {
-              e.preventDefault()
-              return false
-            })
+          // if (!oldmode) this.events = $('*').data('events')
 
-          const alxFrame = `<div id="selection"></div>`
+          // prevent default click actions
+          // $('*').removeAttr('onclick')
+          // $('*').unbind('click')
+          $(toBeTracked).css('pointer-events', 'none')
 
-          var Child = Vue.extend(require('./components/SelectFrame'))
+          // $('*').not('[id^="alx"]').not('[class^="alx"]')
+          //   .click(function (e) {
+          //     e.preventDefault()
+          //     return false
+          //   })
+
+          let Child = Vue.extend(Object.assign(require('./components/SelectFrame'), {
+            parent: this
+          }))
+
+          // let frames = this.frames
+          // let pushFrame = this.pushFrame
+          let appThis = this
 
           // TODO a better way to avoid elements of live editor itself?
-          $('input,button,select').not('[id^="alx"]').not('[class^="alx"]')
-            .bind('mouseover', function () {
-              if (!$(this).parent().hasClass('alx-frame')) {
-                $(this).wrap(alxFrame)
-                var orig = $(this)[0]
-                var frame = new Child({
-                  el: '#selection',
-                  data () {
-                    return {
-                      element: orig
-                    }
-                  },
-                  created () {
-                    console.log(this.element)
-                  }
-                })
-              } else $(this).parent().css('border-color', 'orange')
+          $(toBeTracked).not('[id^="alx-"]').not('[class^="alx-"]')
+            // .bind('mouseover', function () {
+            .each(function () {
+              if (!$(this).parent().hasClass('alx-selectframe')) {
+                // Wrap the element with selectionFrame
+                $(this).wrap('<div id="alx-selection"></div>')
+                var selectedElem = $(this)[0].cloneNode(true)
+                appThis.frames.push(new Child({
+                  el: '#alx-selection',
+                  parent: appThis,
+                  data () { return { element: selectedElem } },
+                }))
+              }
             })
-            // .click(function () {
-            //   if (!$(this).parent().hasClass('alx-frame')) {
-            //     $(this).wrap(alxFrame)
-            //   } else $(this).parent().css('border-color', 'red')
-            // })
         } else {
           // TODO should undo all actions of when mode is true, now just refresh
+          // $(toBeTracked).css('pointer-events', '')
+
         }
     }
   }

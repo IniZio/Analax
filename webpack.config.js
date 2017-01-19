@@ -20,7 +20,8 @@ var baseConfig = {
     fallback: path.join(__dirname, './node_modules'),
     alias: {
       'vue$': 'vue/dist/vue.common.js',
-      'assets': path.resolve(projectRoot, 'src/assets')
+      'assets': path.resolve(projectRoot, 'src/assets'),
+      '~vuex': path.resolve(projectRoot, 'src/vuex')
     }
   },
   resolveLoader: {
