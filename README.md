@@ -15,5 +15,5 @@ npm run dev
 npm run build
 ```
 
-## NOTES
-- Make pageview trackers detect if url have user-specific parts e.g. /profile/someone
+## NOTE
+Issues please use this teleporter: [Issues](https://github.com/Analax/Live-Editor/issues)
