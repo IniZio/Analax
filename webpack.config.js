@@ -2,18 +2,18 @@ var path = require('path')
 var webpack = require('webpack')
 var webpackMerge = require('webpack-merge')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const projectRoot = path.resolve(__dirname, './')
 
 var baseConfig = {
   entry: {
-    app: './src/main.js',
-    vendor: ['jquery', 'vue']
+    app: './src/main.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/',
-    filename: '[name]__[hash].js?'
+    filename: 'analax.js?'
   },
   resolve: {
     extensions: ['', '.js', '.vue', '.json'],
@@ -54,7 +54,7 @@ var baseConfig = {
         }
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg)(\?.*$|$)$/,
         loader: 'url',
         query: {
           limit: 10000,
@@ -82,24 +82,30 @@ if (process.env.NODE_ENV === 'production') {
           NODE_ENV: '"production"'
         }
       }),
-      new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        compress: {
-          warnings: false
-        }
-      }),
-      new webpack.LoaderOptionsPlugin({
-        minimize: true
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor'
-      }),
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        }
-      }),
-      new webpack.optimize.OccurenceOrderPlugin()
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new CleanWebpackPlugin(['dist'], {
+            root: path.resolve(__dirname, '../'),
+            verbose: false,
+            dry: false
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            debug: false,
+            mangle: {
+                except: ['$', '$super', 'exports', 'require', 'webpackJsonp']
+            },
+            compress: {
+                warnings: false,
+                drop_console: true,
+                pure_getters: true
+            },
+            comments: false,
+            beautify: false,
+            sourceMap: false
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.AggressiveMergingPlugin()
     ]
   })
 } else {
