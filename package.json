@@ -4,9 +4,9 @@
   "author": "inizio <digit4free@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "stats": "NODE_ENV='production' webpack -p --json | webpack-bundle-size-analyzer"
+    "stats": "cross-env NODE_ENV='production' webpack -p --json | webpack-bundle-size-analyzer"
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",

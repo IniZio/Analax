@@ -1,6 +1,7 @@
 # analax-editor
 
 > Analax Live Editor
+[![Build Status](https://travis-ci.com/IniZio/Analax-Editor.svg?token=K1jYpqfP5ByUHboVHqqS&branch=injective)](https://travis-ci.com/IniZio/Analax-Editor)
 
 ## Build Setup
 
