@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="alx-app">
     <Toolbar></Toolbar>
   </div>
 </template>
@@ -22,18 +22,18 @@ export default {
     Toolbar: require('./components/Toolbar')
   },
   events: {
-    'pause-editor': function () {
-      this.exitMode()
-    }
+    // 'pause-editor': function () {
+    //   this.exitMode()
+    // }
   },
   methods: {
-    exitMode () {
-      // Destroy selection frames and frames array
-      for (let f of this.frames) { f.$destroy() }
-      this.frames = []
+    // exitMode () {
+    //   // Destroy selection frames and frames array
+    //   for (let f of this.frames) { f.$destroy() }
+    //   this.frames = []
 
-      this.setEditorMode(false)
-    }
+    //   this.setEditorMode(false)
+    // }
   },
   vuex: {
     actions: {
@@ -45,34 +45,30 @@ export default {
   },
   watch: {
     'getEditorMode': function (mode, oldmode) {
-      const toBeTracked = 'input,button,select'
+      const toBeTracked = ['input', 'button', 'a', 'select']
 
       if (mode) {
-          // TODO save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
-          // if (!oldmode) this.events = $('*').data('events')
-
-          // prevent default click actions
-          // $('*').removeAttr('onclick')
-          // $('*').unbind('click')
-          $(toBeTracked).css('pointer-events', 'none')
-
-          // $('*').not('[id^="alx"]').not('[class^="alx"]')
-          //   .click(function (e) {
-          //     e.preventDefault()
-          //     return false
-          //   })
+          // NOTE save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
+          // var events = $('*').data('events')
 
           let Child = Vue.extend(Object.assign(require('./components/SelectFrame'), {
             parent: this
           }))
 
-          // let frames = this.frames
-          // let pushFrame = this.pushFrame
           let appThis = this
 
-          // TODO a better way to avoid elements of live editor itself?
-          $(toBeTracked).not('[id^="alx-"]').not('[class^="alx-"]')
-            // .bind('mouseover', function () {
+          $(toBeTracked.join(','))
+            // not children of alx's
+            .not((toBeTracked.map((item) =>
+              JSON.stringify('[id^="alx-"] ' + item + ',[class^="alx-"] ' + item)))
+            .join(',')
+            .replace(/\\"/g, '\'') // use single quotes
+            .replace(/\"/g, '')) // remove quotes between items
+
+            // Prevent site's own click actions
+            .css('pointer-events', 'none') // May not work with old browsers?
+            .removeAttr('onclick')
+            .unbind('click')
             .each(function () {
               if (!$(this).parent().hasClass('alx-selectframe')) {
                 // Wrap the element with selectionFrame
@@ -86,9 +82,8 @@ export default {
               }
             })
         } else {
-          // TODO should undo all actions of when mode is true, now just refresh
+          // Remove unbinds and resume site's own click actions?
           // $(toBeTracked).css('pointer-events', '')
-
         }
     }
   }
