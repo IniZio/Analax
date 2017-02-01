@@ -1,6 +1,7 @@
 <template>
   <div id="alx-app">
     <Toolbar></Toolbar>
+    <Tracker-overview></Tracker-overview>
   </div>
 </template>
 
@@ -19,7 +20,8 @@ export default {
     this.setEditorMode(true)
   },
   components: {
-    Toolbar: require('./components/Toolbar')
+    Toolbar: require('./components/Toolbar'),
+    TrackerOverview: require('./components/TrackerOverview')
   },
   events: {
     // 'pause-editor': function () {
