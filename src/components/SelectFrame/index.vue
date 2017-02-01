@@ -1,7 +1,7 @@
 <template>
 <Poptip placement="bottom" :visible.sync="isSelected">
   <!-- websites's element -->
-  <Tooltip content="" placement="top-end">
+  <!-- <Tooltip content="" placement="top-end"> -->
   <div class="alx-selectframe"
     :class="{'is-selected': isSelected}"
     v-html="element.outerHTML"></div>
@@ -31,7 +31,7 @@
             </i-select>
         </Form-item>
         <Form-item>
-            <i-input :model.sync="form.event.eventLabel" :disabled="labelType !== 'custom'" size="small"></i-input>
+            <i-input :value.sync="form.event.eventLabel" :disabled="labelType !== 'custom'" size="small"></i-input>
         </Form-item>
       </div>
       <div v-show="form.hitType === 'pageview'">
@@ -49,7 +49,8 @@
 </Poptip>
 </template>
 <script>
-import { addTrackers } from '~vuex/action'
+import { addPins } from '~vuex/action'
+import { getPins } from '~vuex/getter'
   export default {
     beforeDestroy () {
       // console.log('going to be destroyed')
@@ -58,26 +59,12 @@ import { addTrackers } from '~vuex/action'
     },
     data () {
       return {
-        submittedTrackers: [],
         isSelected: false,
-        template: {
-          hitType: ['event', 'pageview'],
-          event: {
-            eventCategory: ['input', 'link'],
-            eventAction: ['click']
-          },
-          pageview: {
-            title: '', // page title
-            location: '', // either location or page must be in the tracker
-            page: '' // protion of url after domwn name
-          },
-          labelType: ['link', 'custom']
-        },
-        labelType: 'link',
+        labelType: 'custom',
         form: {
           hitType: 'event', // whether is event/pageview/social associations... aka. type of tracker
           event: {
-            eventCategory: 'input', // of the object
+            eventCategory: 'default', // of the object
             eventAction: 'click', // the intereventAction, set nonIntereventAction field in GA tracker if non-intereventAction event
             eventLabel: '', // for categorising the event
             value: '',  // the number that is associated with the event
@@ -88,20 +75,39 @@ import { addTrackers } from '~vuex/action'
         }
       }
     },
+    computed: {
+      identifier: function () { return '#' + this.element.id },
+      template: function () {
+        var tpl = {
+          hitType: ['event', 'pageview'],
+          event: {
+            eventCategory: [],
+            eventAction: ['click']
+          },
+          pageview: {
+            title: '',
+            location: '',
+            page: ''
+          },
+          labelType: ['custom']
+        }
+
+        if (this.element.tagName === 'INPUT') tpl.event.eventCategory.push('input')
+        if (this.element.tagName === 'A') {
+          tpl.event.eventCategory.push('link')
+          tpl.labelType.push('link')
+        }
+
+        return tpl
+      }
+    },
     methods: {
       submitTracker () {
-        // var hitDetails = JSON.stringify(this.form.event)
+        var trackedEl = this.element // tracked element identifier
+        var elIdentifier = this.identifier
 
-        // // Make it suitable for ga function parameter
-        // hitDetails.replace(/\\"/g,"\uFFFF")
-        // hitDetails = hitDetails.replace(/\"([^"]+)\":/g,"$1:").replace(/\uFFFF/g,"\\\"")
-
-        var trackedEle = this.element // tracked element identifier
-        // var gaTrackerStr = 'ga (\'send\',\'' + this.form.hitType + '\',\n'
-        //            + hitDetails + ')'
-
-        this.addTrackers([{
-          el: trackedEle,
+        this.addPins([{
+          identifier: elIdentifier,
           tracker: this.form
         }])
 
@@ -115,8 +121,16 @@ import { addTrackers } from '~vuex/action'
         })
       }
     },
+    watch: {
+      'labelType': function (newLabel) {
+        if (this.labelType === 'link' && this.element.tagName === 'A') {
+          this.form.event.eventLabel = this.element.href //or getAttribute('href')?
+        }
+      }
+    },
     vuex: {
-      actions: { addTrackers }
+      actions: { addPins },
+      getters: { getPins }
     }
   }
 </script>
