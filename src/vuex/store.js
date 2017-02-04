@@ -29,7 +29,7 @@ const mutations = {
   PUSH_PINS(state, pins) {
     for (let pin of pins) {
       // TODO add multple trackers to existing matched pin instead of as new pin
-      // if (state.pins.filter((item) => item.identifier === pin.identifier).length > 0) {
+      // if (state.pins.filter((item) => item.pattern === pin.pattern).length > 0) {
       // }
       state.pins.push(pin)
     }
