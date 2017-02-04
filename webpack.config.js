@@ -21,7 +21,8 @@ var baseConfig = {
     alias: {
       'vue$': 'vue/dist/vue.common.js',
       'assets': path.resolve(projectRoot, 'src/assets'),
-      '~vuex': path.resolve(projectRoot, 'src/vuex')
+      '~vuex': path.resolve(projectRoot, 'src/vuex'),
+      '~components': path.resolve(projectRoot, 'src/components')
     }
   },
   resolveLoader: {

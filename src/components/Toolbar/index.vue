@@ -67,7 +67,13 @@ export default {
           pinTrackerDetail.replace(/\\"/g,"\uFFFF")
           pinTrackerDetail = pinTrackerDetail.replace(/\"([^"]+)\":/g,"$1:").replace(/\uFFFF/g,"\\\'").replace(/\"/g, '\'')
 
-          return 'document.getElementById(\''+ pin.identifier.replace(/#/g, '') + '\').addEventListener(\'' + pin.tracker.event.eventAction + '\',function() {ga(\'send\','+
+          if (pin.tracker.hitType === 'pageview')
+          return 'ga(\'send\','+
+          '\'' + pin.tracker.hitType + '\',' +
+          pinTrackerDetail +
+          ')'
+
+          return 'document.getElementById(\''+ pin.pattern.replace(/#/g, '') + '\').addEventListener(\'' + pin.tracker.event.eventAction + '\',function() {ga(\'send\','+
             '\'' + pin.tracker.hitType + '\',' +
             pinTrackerDetail +
           ')})'

@@ -3,7 +3,13 @@
     <Panel key="1">
       Tracker Overview
       <div slot="content">
-        <p v-for="pin in getPins">{{pin.identifier}}</p>
+        <p v-for="pin in getPins">{{pin.pattern}}</p>
+      </div>
+    </Panel>
+    <Panel key="2">
+      Page View Tracker
+      <div slot="content">
+        <pin-popup></pin-popup>
       </div>
     </Panel>
   </Collapse>
@@ -12,6 +18,9 @@
 import { getPins } from '~vuex/getter'
 
 export default {
+  components: {
+      pinPopup: require('~components/pinPopup')
+  },
   vuex: {
     getters: { getPins }
   }
