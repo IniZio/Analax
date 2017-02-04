@@ -36,7 +36,7 @@
       </div>
       <Form-item style="text-align: center">
         <i-button type="primary" @click.prevent="submitPin()">Save</i-button>
-        <i-button type="ghost" style="margin-left: 8px" @click.prevent="toggleSelection(false)">Cancel</i-button>
+        <i-button type="ghost" style="margin-left: 8px" @click.prevent="$dispatch('submitted pin')">Cancel</i-button>
       </Form-item>
     </i-form>
   </div>
