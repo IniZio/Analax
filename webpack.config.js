@@ -8,12 +8,13 @@ const projectRoot = path.resolve(__dirname, './')
 
 var baseConfig = {
   entry: {
-    app: './src/main.js'
+    editor: './src/editor.js',
+    analax: './src/analax.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/',
-    filename: 'analax.js?'
+    filename: '[name].js'
   },
   resolve: {
     extensions: ['', '.js', '.vue', '.json'],
@@ -125,7 +126,7 @@ if (process.env.NODE_ENV === 'production') {
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'src/index.html',
-        inject: true
+        inject: false
       })
     ]
   })
