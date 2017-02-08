@@ -35,6 +35,7 @@
 </div>
 </template>
 <script>
+import {Pins2Str} from '../../util'
 export default {
   created () {
 
@@ -62,22 +63,7 @@ export default {
   vuex: {
     getters: {
       getPinsStr: state => {
-        return JSON.stringify(state.pins.map(function (pin) {
-          var pinTrackerDetail = JSON.stringify(pin.tracker[pin.tracker.hitType])
-          pinTrackerDetail.replace(/\\"/g,"\uFFFF")
-          pinTrackerDetail = pinTrackerDetail.replace(/\"([^"]+)\":/g,"$1:").replace(/\uFFFF/g,"\\\'").replace(/\"/g, '\'')
-
-          if (pin.tracker.hitType === 'pageview')
-          return 'ga(\'send\','+
-          '\'' + pin.tracker.hitType + '\',' +
-          pinTrackerDetail +
-          ')'
-
-          return 'document.getElementById(\''+ pin.pattern.replace(/#/g, '') + '\').addEventListener(\'' + pin.tracker.event.eventAction + '\',function() {ga(\'send\','+
-            '\'' + pin.tracker.hitType + '\',' +
-            pinTrackerDetail +
-          ')})'
-        }))
+        return Pins2Str(state.pins)
       }
     }
   }

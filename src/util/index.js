@@ -22,6 +22,29 @@ function checkGaExistance() {
   return false
 }
 
+function Pins2Str(pins) {
+  return JSON.stringify(pins.map(function (pin) {
+    var pinTrackerDetail = JSON.stringify(pin.tracker[pin.tracker.hitType])
+    // From JSON format to object format
+    pinTrackerDetail.replace(/\\"/g,"\uFFFF")
+    pinTrackerDetail = pinTrackerDetail.replace(/\"([^"]+)\":/g,"$1:").replace(/\uFFFF/g,"\\\'").replace(/\"/g, '\'')
+
+    // If is pageview
+    if (pin.tracker.hitType === 'pageview')
+    return 'ga(\'send\','+
+    '\'' + pin.tracker.hitType + '\',' +
+    pinTrackerDetail +
+    ')'
+
+    // Else is event
+    return 'document.getElementById(\''+ pin.pattern.replace(/#/g, '') + '\').addEventListener(\'' + pin.tracker.event.eventAction + '\',function() {ga(\'send\','+
+      '\'' + pin.tracker.hitType + '\',' +
+      pinTrackerDetail +
+    ')})'
+  }))
+}
+
 export default {
-  checkGaExistance
+  checkGaExistance,
+  Pins2Str
 }
