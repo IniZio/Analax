@@ -43,3 +43,11 @@ firebase.database().ref('localhost/pinbox/').once('value').then((pinbox) => {
 })
 
 // 2. See if the google-signin is authenticated to grab analax editor
+if (true) {
+  var editor_el = document.createElement('script')
+  editor_el.type = 'text/javascript'
+  editor_el.async = !0
+  editor_el.src = 'https://analax.github.io/Live-Editor/editor.js'
+
+  $(document.currentScript)[0].after(editor_el)
+}
