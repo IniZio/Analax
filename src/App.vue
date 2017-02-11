@@ -1,14 +1,13 @@
 <template>
   <div id="alx-app">
-    <Toolbar></Toolbar>
-    <Tracker-overview></Tracker-overview>
+    <!-- <Toolbar></Toolbar> -->
+    <!-- <Tracker-overview></Tracker-overview> -->
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { setEditorMode } from './vuex/action'
-import { getEditorMode } from './vuex/getter'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -16,12 +15,17 @@ export default {
       frames: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'getEditorMode'
+    ])
+  },
   created () {
-    this.setEditorMode(true)
+    this.setEditorMode('ON')
   },
   components: {
-    Toolbar: require('./components/Toolbar'),
-    TrackerOverview: require('./components/TrackerOverview')
+    Toolbar: require('~components/Toolbar'),
+    TrackerOverview: require('~components/TrackerOverview')
   },
   events: {
     // 'pause-editor': function () {
@@ -29,6 +33,9 @@ export default {
     // }
   },
   methods: {
+    ...mapActions([
+      'setEditorMode'
+    ])
     // exitMode () {
     //   // Destroy selection frames and frames array
     //   for (let f of this.frames) { f.$destroy() }
@@ -37,55 +44,44 @@ export default {
     //   this.setEditorMode(false)
     // }
   },
-  vuex: {
-    actions: {
-      setEditorMode
-    },
-    getters: {
-      getEditorMode
-    }
-  },
   watch: {
-    'getEditorMode': function (mode, oldmode) {
-      const toBeTracked = ['input', 'button', 'a', 'select']
+    'getEditorMode': function (editorMode) {
+      const trackableTags = ['input', 'button', 'a', 'select']
 
-      if (mode) {
+      if (editorMode === 'ON') {
           // NOTE save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
           // var events = $('*').data('events')
 
-          let Child = Vue.extend(Object.assign(require('./components/SelectFrame'), {
+          let Child = Vue.extend(Object.assign(require('./components/Pin'), {
             parent: this
           }))
 
           let appThis = this
 
-          $(toBeTracked.join(','))
+          $(trackableTags.join(','))
             // not children of alx's
-            .not((toBeTracked.map((item) =>
+            .not((trackableTags.map((item) =>
               JSON.stringify('[id^="alx-"] ' + item + ',[class^="alx-"] ' + item)))
             .join(',')
             .replace(/\\"/g, '\'') // use single quotes
             .replace(/\"/g, '')) // remove quotes between items
 
             // Prevent site's own click actions
-            .css('pointer-events', 'none') // May not work with old browsers?
-            .removeAttr('onclick')
-            .unbind('click')
+            .css('pointer-events', 'none').removeAttr('onclick').unbind('click')
             .each(function () {
-              if (!$(this).parent().hasClass('alx-selectframe')) {
-                // Wrap the element with selectionFrame
-                $(this).wrap('<div id="alx-selection"></div>')
-                var selectedElem = $(this)[0].cloneNode(true)
+              if (!$(this).parent().hasClass('alx-pinframe')) {
+                // Wrap the element with Pin component
+                var selectedElem = ($(this).clone(true))[0]
+                $(this).wrap('<alx-pin></alx-pin>')
                 appThis.frames.push(new Child({
-                  el: '#alx-selection',
-                  parent: appThis,
+                  el: 'alx-pin',
                   data () { return { element: selectedElem } },
                 }))
               }
             })
         } else {
           // Remove unbinds and resume site's own click actions?
-          // $(toBeTracked).css('pointer-events', '')
+          // $(trackableTags).css('pointer-events', '')
         }
     }
   }

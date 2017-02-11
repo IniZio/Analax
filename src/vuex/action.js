@@ -1,7 +1,7 @@
-export const setEditorMode = ({ dispatch }, to) => {
-  dispatch('TOGGLE_EDITORMODE', (to !== null? to : !store.editorMode))
+export const setEditorMode = ({ commit }, to) => {
+  commit('TOGGLE_EDITORMODE', (to !== null? to : (store.editorMode !== 'ON' ? 'ON' : 'FALSE')))
 }
 
-export const addPins = ({dispatch}, pins) => {
-  dispatch('PUSH_PINS', pins)
+export const addPins = ({commit}, pins) => {
+  commit('PUSH_PINS', pins)
 }

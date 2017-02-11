@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as actions from './action'
+import * as getters from './getter'
 
 Vue.use(Vuex)
 
@@ -18,7 +20,7 @@ Vue.use(Vuex)
 
 
 const state = {
-  editorMode: false,
+  editorMode: 'OFF',
   pins: []
 }
 
@@ -38,6 +40,8 @@ const mutations = {
 
 export default new Vuex.Store({
   state,
+  actions,
+  getters,
   mutations,
   modules: {
   },
