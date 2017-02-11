@@ -19,7 +19,7 @@ import { getPins } from '~vuex/getter'
 
 export default {
   components: {
-      pinPopup: require('~components/pinPopup')
+      pinForm: require('~components/PinForm')
   },
   vuex: {
     getters: { getPins }

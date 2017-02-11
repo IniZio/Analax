@@ -1,5 +1,5 @@
 <template>
-<Modal v-if="submitModal" :visible.sync="submitModal" width="650">
+<div v-if="submitModal" :visible.sync="submitModal" width="650">
   <p slot="header" style="text-align:center">
       <Icon type="information-circled"></Icon>
       <span>Save Trackers</span>
@@ -10,7 +10,7 @@
   <div slot="footer">
       <i-button type="error" size="large" long :loading="modal_loading" @click="">Submit</i-button>
   </div>
-</Modal>
+</div>
 <div id="alx-toolbar">
   <div class="toolbar-space"></div>
   <Menu mode="horizontal" theme="light" active-key="1">
