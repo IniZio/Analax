@@ -2,18 +2,18 @@
   "rules" : {
     "$domain": {
       "collaborators": {
-        ".read": "root.child($domain + '/collaborators/' + auth.uid).exists()",
-        ".write": "root.child($domain + '/collaborators/' + auth.uid).exists()",
+        ".read": "root.child($domain + '/collaborators/').child(auth.uid).exists()",
+        ".write": "root.child($domain + '/collaborators/').child(auth.uid).exists()",
         "$uid": {
-          ".read": "root.child($domain + '/collaborators/' + auth.uid).exists()",
-          ".write": "root.child($domain + '/collaborators/' + auth.uid).exists()"
+          ".read": "root.child($domain + '/collaborators/').child(auth.uid).exists()",
+          ".write": "root.child($domain + '/collaborators/').child(auth.uid).exists()"
         }
       },
       "pinbox": {
         ".read": true,
-        ".write": "root.child($domain + '/collaborators/' + auth.uid).exists()",
+        ".write": "root.child($domain + '/collaborators/').child(auth.uid).exists()",
         "$pid": {
-          "pattern": "",
+          "pattern": {},
           "tracker": {}
         }
       }
