@@ -2,36 +2,36 @@
   <div class="alx-pinpopup">
     <form label-position="top">
       <div label="Hit type">
-        <select :model.sync="form.hitType" size="small">
+        <select :model="form.hitType" size="small">
           <option v-for="item in template.hitType" :value="item">{{ item }}</option>
         </select>
       </div>
       <div v-show="form.hitType === 'event'">
         <div label="Event Category">
-          <select :model.sync="form.event.eventCategory" size="small">
+          <select :model="form.event.eventCategory" size="small">
             <option v-for="item in template.event.eventCategory" :value="item">{{ item }}</option>
           </select>
         </div>
         <div label="Event Action">
-          <select :model.sync="form.event.pin" size="small">
+          <select :model="form.event.pin" size="small">
             <option v-for="item in template.event.pin" :value="item">{{ item }}</option>
           </select>
         </div>
         <div label="Event Label">
-          <select :model.sync="labelType" size="small">
+          <select :model="labelType" size="small">
             <option v-for="item in template.labelType" :value="item">{{ item }}</option>
           </select>
         </div>
         <div>
-          <input :value.sync="form.event.eventLabel" :disabled="labelType !== 'custom'" size="small"></input>
+          <input :value="form.event.eventLabel" :disabled="labelType !== 'custom'" size="small"></input>
         </div>
       </div>
       <div v-show="form.hitType === 'pageview'">
         <div label="Page Title">
-          <input :value.sync="form.pageview.title" size="small"></input>
+          <input :value="form.pageview.title" size="small"></input>
         </div>
         <div label="Page location">
-          <input :value.sync="form.pageview.location" size="small" disabled></input>
+          <input :value="form.pageview.location" size="small" disabled></input>
         </div>
       </div>
       <div style="text-align: center">
