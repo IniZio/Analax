@@ -1,44 +1,44 @@
 <template>
   <div class="alx-pinpopup">
-    <i-form label-position="top">
-      <Form-item label="Hit type">
-        <i-select :model.sync="form.hitType" size="small">
-          <i-option v-for="item in template.hitType" :value="item">{{ item }}</i-option>
-        </i-select>
-      </Form-item>
+    <form label-position="top">
+      <div label="Hit type">
+        <select :model.sync="form.hitType" size="small">
+          <option v-for="item in template.hitType" :value="item">{{ item }}</option>
+        </select>
+      </div>
       <div v-show="form.hitType === 'event'">
-        <Form-item label="Event Category">
-          <i-select :model.sync="form.event.eventCategory" size="small">
-            <i-option v-for="item in template.event.eventCategory" :value="item">{{ item }}</i-option>
-          </i-select>
-        </Form-item>
-        <Form-item label="Event Action">
-          <i-select :model.sync="form.event.pin" size="small">
-            <i-option v-for="item in template.event.pin" :value="item">{{ item }}</i-option>
-          </i-select>
-        </Form-item>
-        <Form-item label="Event Label">
-          <i-select :model.sync="labelType" size="small">
-            <i-option v-for="item in template.labelType" :value="item">{{ item }}</i-option>
-          </i-select>
-        </Form-item>
-        <Form-item>
-          <i-input :value.sync="form.event.eventLabel" :disabled="labelType !== 'custom'" size="small"></i-input>
-        </Form-item>
+        <div label="Event Category">
+          <select :model.sync="form.event.eventCategory" size="small">
+            <option v-for="item in template.event.eventCategory" :value="item">{{ item }}</option>
+          </select>
+        </div>
+        <div label="Event Action">
+          <select :model.sync="form.event.pin" size="small">
+            <option v-for="item in template.event.pin" :value="item">{{ item }}</option>
+          </select>
+        </div>
+        <div label="Event Label">
+          <select :model.sync="labelType" size="small">
+            <option v-for="item in template.labelType" :value="item">{{ item }}</option>
+          </select>
+        </div>
+        <div>
+          <input :value.sync="form.event.eventLabel" :disabled="labelType !== 'custom'" size="small"></input>
+        </div>
       </div>
       <div v-show="form.hitType === 'pageview'">
-        <Form-item label="Page Title">
-          <i-input :value.sync="form.pageview.title" size="small"></i-input>
-        </Form-item>
-        <Form-item label="Page location">
-          <i-input :value.sync="form.pageview.location" size="small" disabled></i-input>
-        </Form-item>
+        <div label="Page Title">
+          <input :value.sync="form.pageview.title" size="small"></input>
+        </div>
+        <div label="Page location">
+          <input :value.sync="form.pageview.location" size="small" disabled></input>
+        </div>
       </div>
-      <Form-item style="text-align: center">
-        <i-button type="primary" @click.prevent="submitPin()">Save</i-button>
-        <i-button type="ghost" style="margin-left: 8px" @click.prevent="$dispatch('submitted pin')">Cancel</i-button>
-      </Form-item>
-    </i-form>
+      <div style="text-align: center">
+        <button type="primary" @click.prevent="submitPin()">Save</button>
+        <button type="ghost" style="margin-left: 8px" @click.prevent="$bus.$emit('submitted pin')">Cancel</button>
+      </div>
+    </form>
   </div>
 </template>
 <script>
@@ -110,7 +110,7 @@ export default {
       }])
 
       this.$Message.success('Tracker added');
-      this.$dispatch('submitted pin')
+      this.$bus.$emit('submitted pin')
     },
   },
   watch: {

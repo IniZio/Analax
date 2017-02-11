@@ -20,7 +20,7 @@ Vue.use(Vuex)
 
 
 const state = {
-  editorMode: false,
+  editorMode: 'OFF',
   pins: []
 }
 

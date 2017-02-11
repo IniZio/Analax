@@ -20,6 +20,11 @@
     beforeDestroy() {
       // $(this.$el)[0].append(this.element)
     },
+    created () {
+      this.$bus.$on('submitted pin', function () {
+        this.toggleSelection(false)
+      }.bind(this))
+    },
     data() {
       return {
         isSelected: false,
@@ -34,11 +39,6 @@
         $(this).on('click', function (e) {
           e.stopPropagation();
         })
-      }
-    },
-    events: {
-      'submitted pin': function () {
-        this.toggleSelection(false)
       }
     },
     computed: {

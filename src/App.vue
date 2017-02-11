@@ -21,7 +21,7 @@ export default {
     ])
   },
   created () {
-    this.setEditorMode(true)
+    this.setEditorMode('ON')
   },
   components: {
     Toolbar: require('~components/Toolbar'),
@@ -48,7 +48,7 @@ export default {
     'getEditorMode': function (editorMode) {
       const trackableTags = ['input', 'button', 'a', 'select']
 
-      if (editorMode) {
+      if (editorMode === 'ON') {
           // NOTE save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
           // var events = $('*').data('events')
 

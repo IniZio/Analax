@@ -1,5 +1,3 @@
-import api from './api'
-
 function checkGaExistance() {
   var scripts = document.getElementsByTagName('script'),
     ga = true, // set to false if you don't want to check for ga.js
