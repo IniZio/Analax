@@ -21,7 +21,7 @@
       // $(this.$el)[0].append(this.element)
     },
     created () {
-      this.$bus.$on('submitted pin', function () {
+      this.$bus.$on('DONE PIN', function () {
         this.toggleSelection(false)
       }.bind(this))
     },

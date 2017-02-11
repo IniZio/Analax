@@ -36,7 +36,7 @@
       </div>
       <div style="text-align: center">
         <button type="primary" @click.prevent="submitPin()">Save</button>
-        <button type="ghost" style="margin-left: 8px" @click.prevent="$bus.$emit('submitted pin')">Cancel</button>
+        <button type="ghost" style="margin-left: 8px" @click.prevent="$bus.$emit('DONE PIN')">Cancel</button>
       </div>
     </form>
   </div>
@@ -52,7 +52,7 @@ export default {
         hitType: '', // whether is event/pageview/social associations... aka. type of tracker
         event: {
           eventCategory: 'default', // of the object
-          pin: 'click', // the interpin, set nonInterpin field in GA tracker if non-interpin event
+          eventAction: 'click', // the interpin, set nonInterpin field in GA tracker if non-interpin event
           eventLabel: '', // for categorising the event
           value: '', // the number that is associated with the event
           transport: '' // need to set as beacon if is form
@@ -110,7 +110,7 @@ export default {
       }])
 
       this.$Message.success('Tracker added');
-      this.$bus.$emit('submitted pin')
+      this.$bus.$emit('DONE PIN')
     },
   },
   watch: {

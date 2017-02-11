@@ -1,9 +1,10 @@
-function checkGaExistance() {
+export const checkGaExistance = () => {
   var scripts = document.getElementsByTagName('script'),
     ga = true, // set to false if you don't want to check for ga.js
-    ua = true, // set to false if you don't want to check for analytics.js
+    ua = false, // set to false if you don't want to check for analytics.js
     dc = false, // set to false if you don't want to check for dc.js
     i = 0, len = 0
+  console.log()
   if (ga || ua || dc) {
     for (i = 0, len = scripts.length ; i < len; i++) {
       if (ga && /www\.google-analytics\.com\/ga\.js/.test(scripts[i].src)) {
@@ -20,8 +21,8 @@ function checkGaExistance() {
   return false
 }
 
-function Pins2Str(pins) {
-  return JSON.stringify(pins.map(function (pin) {
+export const Pinbox2Str = pinbox => {
+  return JSON.stringify(pinbox.map(pin => {
     var pinTrackerDetail = JSON.stringify(pin.tracker[pin.tracker.hitType])
     // From JSON format to object format
     pinTrackerDetail.replace(/\\"/g,"\uFFFF")
@@ -40,9 +41,4 @@ function Pins2Str(pins) {
       pinTrackerDetail +
     ')})'
   }))
-}
-
-export default {
-  checkGaExistance,
-  Pins2Str
 }

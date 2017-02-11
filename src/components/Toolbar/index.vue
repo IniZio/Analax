@@ -36,7 +36,7 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
-import {Pins2Str} from '../../util'
+import {Pinbox2Str} from '../../util'
 export default {
   created () {
 
@@ -67,7 +67,7 @@ export default {
   vuex: {
     getters: {
       getPinsStr: state => {
-        return Pins2Str(state.pins)
+        return Pinbox2Str(state.pins)
       }
     }
   }
