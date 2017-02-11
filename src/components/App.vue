@@ -52,7 +52,7 @@ export default {
           // NOTE save the websites' default event handlers. reference: http://stackoverflow.com/questions/516265/jquery-unbind-event-handlers-to-bind-them-again-later '
           // var events = $('*').data('events')
 
-          let Child = Vue.extend(Object.assign(require('./components/Pin'), {
+          let Child = Vue.extend(Object.assign(require('~components/Pin'), {
             parent: this
           }))
 
